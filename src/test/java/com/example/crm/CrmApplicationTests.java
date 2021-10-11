@@ -9,7 +9,6 @@ class CrmApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Assert.isTrue(true);
 	}
 
 }

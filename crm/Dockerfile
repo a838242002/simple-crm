@@ -4,8 +4,8 @@ WORKDIR /home/gradle/src
 RUN gradle build --no-daemon
 
 FROM openjdk:17-ea-oracle
-EXPOSE 8080/tcp/app
+EXPOSE 8080/tcp
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/crm-service.jar
 
-ENTRYPOINT ["java", "-jar", "/app/crm-service.jar"]
+ENTRYPOINT ["java", "-Dserver.port=$PORT", "-jar", "/app/crm-service.jar"]

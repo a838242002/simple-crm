@@ -1,6 +1,7 @@
 package com.example.crm.controller;
 
 import com.example.crm.converter.ClientConverter;
+import com.example.crm.dto.basic.BasicResponse;
 import com.example.crm.dto.client.CreateClientRequest;
 import com.example.crm.dto.client.DeleteClientRequest;
 import com.example.crm.dto.client.UpdateClientRequest;
@@ -26,72 +27,72 @@ public class ClientController {
     ClientService clientService;
 
     @PostMapping(consumes="application/json")
-    public ResponseEntity<List<Client>> createClients(@Valid @RequestBody List<CreateClientRequest> requests) {
+    public ResponseEntity<BasicResponse> createClients(@Valid @RequestBody List<CreateClientRequest> requests) {
         List<Client> clients;
 
         try {
             clients = clientService.createClients(ClientConverter.toEntity(requests));
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(clients);
+        return ResponseEntity.ok(BasicResponse.success(clients));
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getClients() {
+    public ResponseEntity<BasicResponse> getClients() {
         List<Client> clients;
 
         try {
             clients = clientService.getClients();
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(clients);
+        return ResponseEntity.ok(BasicResponse.success(clients));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getClient(@PathVariable Long id) {
+    public ResponseEntity<BasicResponse> getClient(@PathVariable Long id) {
         Client client;
 
         try {
             client = clientService.getClient(id);
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(BasicResponse.success(client));
     }
 
     @PutMapping(consumes="application/json")
-    public ResponseEntity<Client> updateClient(@Valid @RequestBody UpdateClientRequest request) {
+    public ResponseEntity<BasicResponse> updateClient(@Valid @RequestBody UpdateClientRequest request) {
         Client client;
 
         try {
             client = clientService.updateClient(ClientConverter.toEntity(request));
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(BasicResponse.success(client));
     }
 
     @DeleteMapping(consumes="application/json")
-    public ResponseEntity<String> deleteClient(@Valid  @RequestBody DeleteClientRequest request) {
+    public ResponseEntity<BasicResponse> deleteClient(@Valid  @RequestBody DeleteClientRequest request) {
         String result;
 
         try {
              result = clientService.deleteClient(request.getId());
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>("Delete failed", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BasicResponse.success(result));
     }
 }

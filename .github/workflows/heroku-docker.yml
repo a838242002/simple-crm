@@ -49,7 +49,7 @@ jobs:
 
           # (Optional, default: "")
           # Additional options of docker build command.
-          docker_options: "--no-cache --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} "
+          docker_options: "--no-cache --build-arg INPUT_MYSQL_PWD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} --build-arg INPUT_MYSQL_URL=${{ secrets.SPRING_DATASOURCE_URL }} --build-arg INPUT_MYSQL_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} --build-arg INPUT_REDIS_HOST=${{ secrets.SPRING_REDIS_HOST }} --build-arg INPUT_REDIS_PWD=${{ secrets.SPRING_REDIS_PASSWORD }} --build-arg JWT_TOKEN=${{ secrets.JWT_TOKEN }}"
 
           # (Optional, default: "web")
           # Select the process type for which you want the docker container to be uploaded.

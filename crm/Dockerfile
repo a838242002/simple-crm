@@ -1,13 +1,23 @@
 FROM gradle:7.2.0-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-ARG SPRING_DATASOURCE_PASSWORD
-ENV SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
 RUN gradle build --no-daemon
 
 FROM openjdk:17-ea-oracle
 EXPOSE 8080/tcp
+ARG INPUT_MYSQL_URL
+ENV SPRING_DATASOURCE_URL=${INPUT_MYSQL_URL}
+ARG INPUT_MYSQL_PWD
+ENV SPRING_DATASOURCE_PASSWORD=${INPUT_MYSQL_PWD}
+ARG INPUT_MYSQL_USERNAME
+ENV SPRING_DATASOURCE_USERNAME=${INPUT_MYSQL_USERNAME}
+ARG INPUT_REDIS_PWD
+ENV SPRING_REDIS_PASSWORD=${INPUT_REDIS_PWD}
+ARG INPUT_REDIS_HOST
+ENV SPRING_REDIS_PASSWORD=${INPUT_REDIS_HOST}
+ARG JWT_TOKEN
+ENV JWT_KEY=${JWT_TOKEN}
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/crm-service.jar
 
-ENTRYPOINT ["java", "-Dserver.port=$PORT", "-jar", "/app/crm-service.jar"]
+ENTRYPOINT ["java", "-Dserver.port=${PORT}", "-jar", "/app/crm-service.jar"]

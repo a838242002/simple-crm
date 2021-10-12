@@ -5,7 +5,7 @@ name: Deploy to heroku.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ main, build-cicd ]
   pull_request:
     branches: [ main ]
 
@@ -56,3 +56,5 @@ jobs:
           # By default, this argument is set to "web".
           # For more information look at https://devcenter.heroku.com/articles/process-model
           process_type: web
+
+          env: SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }} 

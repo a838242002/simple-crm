@@ -1,5 +1,0 @@
-  name: "Build"
-    description: "Build crm service"
-  runs:
-    using: "docker"
-    image: "crm/Dockerfile"

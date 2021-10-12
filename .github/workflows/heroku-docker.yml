@@ -49,7 +49,7 @@ jobs:
 
           # (Optional, default: "")
           # Additional options of docker build command.
-          docker_options: "--no-cache"
+          docker_options: "--no-cache --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} "
 
           # (Optional, default: "web")
           # Select the process type for which you want the docker container to be uploaded.
@@ -57,4 +57,4 @@ jobs:
           # For more information look at https://devcenter.heroku.com/articles/process-model
           process_type: web
 
-          env: SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }} 
+          

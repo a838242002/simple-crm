@@ -5,7 +5,7 @@ name: Deploy to heroku.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ main, build-cicd ]
   pull_request:
     branches: [ main ]
 
@@ -49,10 +49,12 @@ jobs:
 
           # (Optional, default: "")
           # Additional options of docker build command.
-          docker_options: "--no-cache"
+          docker_options: "--no-cache --build-arg INPUT_MYSQL_PWD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} --build-arg INPUT_MYSQL_URL=${{ secrets.SPRING_DATASOURCE_URL }} --build-arg INPUT_MYSQL_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} --build-arg INPUT_REDIS_HOST=${{ secrets.SPRING_REDIS_HOST }} --build-arg INPUT_REDIS_PWD=${{ secrets.SPRING_REDIS_PASSWORD }} --build-arg JWT_TOKEN=${{ secrets.JWT_TOKEN }}"
 
           # (Optional, default: "web")
           # Select the process type for which you want the docker container to be uploaded.
           # By default, this argument is set to "web".
           # For more information look at https://devcenter.heroku.com/articles/process-model
           process_type: web
+
+          

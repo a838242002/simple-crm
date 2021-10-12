@@ -1,6 +1,7 @@
 package com.example.crm.controller;
 
 import com.example.crm.converter.UserConverter;
+import com.example.crm.dto.basic.BasicResponse;
 import com.example.crm.dto.user.AddRoleToUserRequest;
 import com.example.crm.dto.user.CreateUserRequest;
 import com.example.crm.dto.user.DeleteUserRequest;
@@ -30,86 +31,86 @@ public class AppUserController {
 
     @ApiOperation(value = "Create App User")
     @PostMapping(consumes="application/json")
-    public ResponseEntity<AppUser> createUser(@Valid  @RequestBody CreateUserRequest request) {
+    public ResponseEntity<BasicResponse> createUser(@Valid  @RequestBody CreateUserRequest request) {
         AppUser user;
 
         try {
             user = appUserService.createAppUser(UserConverter.toEntity(request));
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(BasicResponse.success(user));
     }
 
     @GetMapping
-    public ResponseEntity<List<AppUser>> getUsers() {
+    public ResponseEntity<BasicResponse> getUsers() {
         List<AppUser> users;
 
         try {
             users = appUserService.getAppUsers();
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(BasicResponse.success(users));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> getUser(@PathVariable Long id) {
+    public ResponseEntity<BasicResponse> getUser(@PathVariable Long id) {
         AppUser user;
 
         try {
             user = appUserService.getAppUser(id);
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(BasicResponse.success(user));
     }
 
     @PutMapping(consumes="application/json")
-    public ResponseEntity<AppUser> updateUser(@Valid @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<BasicResponse> updateUser(@Valid @RequestBody UpdateUserRequest request) {
         AppUser user;
 
         try {
             user = appUserService.updateAppUser(UserConverter.toEntity(request));
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(BasicResponse.success(user));
     }
 
     @DeleteMapping(consumes="application/json")
-    public ResponseEntity<String> deleteUser(@Valid @RequestBody DeleteUserRequest request) {
+    public ResponseEntity<BasicResponse> deleteUser(@Valid @RequestBody DeleteUserRequest request) {
         String result;
 
         try {
             result = appUserService.deleteAppUser(request.getId());
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>("Delete failed", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BasicResponse.success());
     }
 
     @PostMapping(value = "add-role", consumes="application/json")
-    public ResponseEntity<AppUser> addRole(@Valid @RequestBody AddRoleToUserRequest request) {
+    public ResponseEntity<BasicResponse> addRole(@Valid @RequestBody AddRoleToUserRequest request) {
         AppUser user;
 
         try {
             user = appUserService.addRole(request.getUserId(), request.getRoleId());
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(BasicResponse.success(user));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.crm.controller;
 
 import com.example.crm.converter.RoleConverter;
+import com.example.crm.dto.basic.BasicResponse;
 import com.example.crm.dto.role.CreateRoleRequest;
 import com.example.crm.dto.role.DeleteRoleRequest;
 import com.example.crm.dto.role.UpdateRoleRequest;
@@ -26,72 +27,72 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping(consumes="application/json")
-    public ResponseEntity<Role> createRole(@Valid @RequestBody CreateRoleRequest request) {
+    public ResponseEntity<BasicResponse> createRole(@Valid @RequestBody CreateRoleRequest request) {
         Role role;
 
         try {
             role = roleService.createRole(RoleConverter.toEntity(request));
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(role);
+        return ResponseEntity.ok(BasicResponse.success(role));
     }
 
     @GetMapping
-    public ResponseEntity<List<Role>> getRoles() {
+    public ResponseEntity<BasicResponse> getRoles() {
         List<Role> roles;
 
         try {
             roles = roleService.getRoles();
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(roles);
+        return ResponseEntity.ok(BasicResponse.success(roles));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getRole(@PathVariable Long id) {
+    public ResponseEntity<BasicResponse> getRole(@PathVariable Long id) {
         Role role;
 
         try {
             role = roleService.getRole(id);
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(role);
+        return ResponseEntity.ok(BasicResponse.success(role));
     }
 
     @PutMapping(consumes="application/json")
-    public ResponseEntity<Role> updateRole(@Valid @RequestBody UpdateRoleRequest request) {
+    public ResponseEntity<BasicResponse> updateRole(@Valid @RequestBody UpdateRoleRequest request) {
         Role role;
 
         try {
             role = roleService.updateRole(RoleConverter.toEntity(request));
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(role);
+        return ResponseEntity.ok(BasicResponse.success(role));
     }
 
     @DeleteMapping(consumes="application/json")
-    public ResponseEntity<String> deleteRole(@Valid @RequestBody DeleteRoleRequest request) {
+    public ResponseEntity<BasicResponse> deleteRole(@Valid @RequestBody DeleteRoleRequest request) {
         String result;
 
         try {
             result = roleService.deleteRole(request.getId());
         } catch (Exception e) {
             log.error(e.toString());
-            return new ResponseEntity<>("Delete failed", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(BasicResponse.fail(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(BasicResponse.success(result));
     }
 }
